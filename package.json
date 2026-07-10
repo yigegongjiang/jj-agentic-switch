@@ -1,9 +1,11 @@
 {
   "name": "jjllmuse",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
-  "bin": { "jjllmuse": "./src/cli.ts" },
+  "bin": {
+    "jjllmuse": "./src/cli.ts"
+  },
   "scripts": {
     "build": "mkdir -p dist && bun run build.ts",
     "typecheck": "tsc --noEmit"

@@ -11,6 +11,20 @@
 
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) + [SemVer](https://semver.org/).
 
+## [0.3.0] - 2026-07-10
+
+### Added
+
+- 自动备份: 查看状态 / 切换账号时自动把当前活跃账号收录进备份库, 无需再手动跑 `backup`.
+
+### Changed
+
+- `backup` 命令改为可选 (兜底 / 手动刷新用); 新账号 /login 后不再强制先跑一次.
+
+### Fixed
+
+- 切换到目标账号时, 即使当前账号从未备份过也不再报错中断 (自动识别并收录).
+
 ## [0.2.0] - 2026-06-22
 
 ### Added

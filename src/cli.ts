@@ -10,7 +10,7 @@ USAGE
   jjllmuse                       status of both + backup lists
   jjllmuse <cc|cx>               status + backups of one tool
   jjllmuse <cc|cx> <email>       switch (fuzzy match on email)
-  jjllmuse <cc|cx> backup        backup current account (run once after /login)
+  jjllmuse <cc|cx> backup        manually back up current account (usually automatic)
   jjllmuse update                self-update from latest GitHub release
   jjllmuse -h | -v
 `;

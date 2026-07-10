@@ -7,6 +7,23 @@
 
 # Changelog (developer, follow [CHANGELOG.md](./CHANGELOG.md))
 
+## [0.3.0] - 2026-07-10
+
+### Added
+
+- 自动备份: 查看状态 / 切换账号时自动把当前活跃账号收录进备份库, 无需再手动跑 `backup`.
+  - `cc.ts` 抽 `ccActive()` (读 Keychain + 一次 identify, 无副作用) 供 `ccCurrent` 复用; 新增 `captureCc`/`captureCx`: 备份已存在且 accessToken/access_token 未变则跳过 (免 mtime 抖动), 否则 merge-safe 写入, 仅全新 email 打印一行 gray 提示. 失败静默, 绝不阻断状态查看.
+
+### Changed
+
+- `backup` 命令改为可选 (兜底 / 手动刷新用); 新账号 /login 后不再强制先跑一次.
+  - `writeCcBackup` 去掉 `verb` 参数与内部 `info`, 改返回 `wasNew` 布尔由调用方决定输出; HELP 文案 `run once after /login` → `usually automatic`.
+
+### Fixed
+
+- 切换到目标账号时, 即使当前账号从未备份过也不再报错中断 (自动识别并收录).
+  - `cxSwitch` re-backup 分支: 原 `findEmailByRefresh` 匹配不到即 `fail("Run: jjllmuse cx backup")`, 改为 fallback 到 `emailOf(cur)` 本地 JWT 解码兜底备份 (email 为空才跳过).
+
 ## [0.2.0] - 2026-06-22
 
 ### Added

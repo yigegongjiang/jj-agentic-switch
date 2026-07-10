@@ -75,10 +75,13 @@ async function identifyEmail(a: Auth): Promise<string | null> {
   return (await fetchProfile(a.claudeAiOauth.accessToken))?.account?.email ?? await claudeAuthStatusEmail();
 }
 
-function writeCcBackup(email: string, raw: string, verb: string) {
+// Write a cc backup, returning whether this email was newly added. No output —
+// caller decides what (if anything) to print.
+function writeCcBackup(email: string, raw: string): boolean {
   const incoming = parse(raw);
   const path = backupPath(CC_DIR, email);
-  if (!incoming.claudeAiOauth.refreshToken && existsSync(path)) {
+  const wasNew = !existsSync(path);
+  if (!incoming.claudeAiOauth.refreshToken && !wasNew) {
     try {
       const existing = parse(readFileSync(path, "utf8"));
       if (existing.claudeAiOauth.refreshToken) {
@@ -87,13 +90,44 @@ function writeCcBackup(email: string, raw: string, verb: string) {
         const merged = JSON.parse(raw);
         merged.claudeAiOauth.refreshToken = existing.claudeAiOauth.refreshToken;
         writeSecret(path, JSON.stringify(merged));
-        info(`${verb} cc → ${cyan(email)} (merged: live accessToken + existing refreshToken)`);
-        return;
+        return wasNew;
       }
     } catch {}
   }
   writeSecret(path, raw);
-  info(`${verb} cc → ${cyan(email)}`);
+  return wasNew;
+}
+
+// Silently capture the live account into the backup library. Backup already
+// holds the same accessToken → skip (no mtime churn). Otherwise write via the
+// merge-safe path; announce only genuinely new emails. Never throws.
+function captureCc(email: string, raw: string) {
+  try {
+    const path = backupPath(CC_DIR, email);
+    if (existsSync(path)) {
+      // Use plain JSON.parse, NOT parse() — parse() calls fail()→process.exit,
+      // which escapes try/catch and would crash status view on a tokenless backup.
+      const bak = JSON.parse(readFileSync(path, "utf8")) as Partial<Auth>;
+      const cur = JSON.parse(raw) as Partial<Auth>;
+      if (bak?.claudeAiOauth?.accessToken === cur?.claudeAiOauth?.accessToken) return;
+      writeCcBackup(email, raw);
+      return;
+    }
+    writeCcBackup(email, raw);
+    console.log(gray(`  captured cc → ${email}`));
+  } catch {}
+}
+
+// Read Keychain + identify the live email. No side effects, no output.
+// null → no credential at all; token=null → present but unparseable/malformed.
+async function ccActive(): Promise<{ raw: string; token: string | null; email: string | null } | null> {
+  const raw = await readKeychain();
+  if (!raw) return null;
+  let token: string | null = null;
+  try { token = (JSON.parse(raw) as Partial<Auth>)?.claudeAiOauth?.accessToken ?? null; } catch {}
+  if (!token) return { raw, token: null, email: null };
+  const email = (await fetchProfile(token))?.account?.email ?? await claudeAuthStatusEmail();
+  return { raw, token, email };
 }
 
 function findEmailByRefresh(refresh: string, exclude?: string): string | null {
@@ -126,13 +160,12 @@ function clearClaudeJsonIdentity() {
 export async function ccCurrent() {
   // Status query must never crash: any unexpected payload → warn and return.
   try {
-    const raw = await readKeychain();
-    if (!raw) { warn(`no cc credential in Keychain (run 'claude' /login first)`); return; }
-    const a = JSON.parse(raw) as Partial<Auth>;
-    const token = a?.claudeAiOauth?.accessToken;
-    if (!token) { warn("cc credential format unexpected (missing claudeAiOauth.accessToken)"); return; }
-    const email = (await fetchProfile(token))?.account?.email ?? await claudeAuthStatusEmail();
-    console.log(`cc  ${cyan(email ?? "?")}`);
+    const active = await ccActive();
+    if (!active) { warn(`no cc credential in Keychain (run 'claude' /login first)`); return; }
+    if (!active.token) { warn("cc credential format unexpected (missing claudeAiOauth.accessToken)"); return; }
+    console.log(`cc  ${cyan(active.email ?? "?")}`);
+    // Auto-capture the live account so users never have to run `backup` by hand.
+    if (active.email) captureCc(active.email, active.raw);
   } catch (e) {
     warn(`cc status unavailable: ${e instanceof Error ? e.message : String(e)}`);
   }
@@ -144,7 +177,8 @@ export async function ccBackup() {
   const a = parse(raw);
   const email = await identifyEmail(a);
   if (!email) fail("could not resolve cc email (token expired or network down)");
-  writeCcBackup(email, raw, "backed up");
+  writeCcBackup(email, raw);
+  info(`backed up cc → ${cyan(email)}`);
 }
 
 export function ccList() {
@@ -170,7 +204,8 @@ export async function ccSwitch(query: string, rebackup = true) {
       let curEmail = cur.claudeAiOauth.refreshToken ? findEmailByRefresh(cur.claudeAiOauth.refreshToken, email) : null;
       if (!curEmail) curEmail = await identifyEmail(cur);
       if (!curEmail) fail("cannot identify current cc account. Run: jjllmuse cc backup");
-      writeCcBackup(curEmail, currentRaw, "re-backed up");
+      writeCcBackup(curEmail, currentRaw);
+      info(`re-backed up cc → ${cyan(curEmail)}`);
     }
   }
 
