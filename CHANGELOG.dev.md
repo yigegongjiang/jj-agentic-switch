@@ -7,6 +7,20 @@
 
 # Changelog (developer, follow [CHANGELOG.md](./CHANGELOG.md))
 
+## [0.4.0] - 2026-07-21
+
+### Changed
+
+- CLI 命令重命名: `jjllmuse` → `jj-llm-switch` (与项目名一致); 二进制资产 / 安装路径同步更名.
+  - `package.json` `name` + `bin`; `install.sh` `BIN` + `asset`; `update.ts` `assetName()` + `basename` 前缀校验; `.github/workflows/release.yml` 双 binary + `checksums.txt` 文件名; `src/cli.ts` HELP / unknown-cmd 提示; `src/cc.ts` error hint. `build.ts` 通过 `pkg.name` 自动跟随.
+- 备份目录: `~/.config/jjllmuse` → `~/.config/jj-llm-switch`.
+  - `src/shared.ts` `HOME` 常量.
+
+### Removed
+
+- 旧命令 `jjllmuse` / 旧目录 `~/.config/jjllmuse` 不再兼容; 升级后如有旧备份需 `mv ~/.config/jjllmuse ~/.config/jj-llm-switch`, 旧 binary `rm ~/.local/bin/jjllmuse`.
+  - 不做自动迁移 (代码复杂度 vs 手动 mv 的取舍).
+
 ## [0.3.0] - 2026-07-10
 
 ### Added

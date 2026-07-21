@@ -203,7 +203,7 @@ export async function ccSwitch(query: string, rebackup = true) {
     if (rebackup) {
       let curEmail = cur.claudeAiOauth.refreshToken ? findEmailByRefresh(cur.claudeAiOauth.refreshToken, email) : null;
       if (!curEmail) curEmail = await identifyEmail(cur);
-      if (!curEmail) fail("cannot identify current cc account. Run: jjllmuse cc backup");
+      if (!curEmail) fail("cannot identify current cc account. Run: jj-llm-switch cc backup");
       writeCcBackup(curEmail, currentRaw);
       info(`re-backed up cc → ${cyan(curEmail)}`);
     }

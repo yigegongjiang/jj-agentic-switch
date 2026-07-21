@@ -22,12 +22,12 @@ jobs:
       - name: Generate SHA256 checksums
         working-directory: dist
         run: |
-          sha256sum jjllmuse-macos-arm64 jjllmuse-macos-x64 > checksums.txt
+          sha256sum jj-llm-switch-macos-arm64 jj-llm-switch-macos-x64 > checksums.txt
           cat checksums.txt
       - uses: softprops/action-gh-release@v2
         with:
           fail_on_unmatched_files: true
           files: |
-            dist/jjllmuse-macos-arm64
-            dist/jjllmuse-macos-x64
+            dist/jj-llm-switch-macos-arm64
+            dist/jj-llm-switch-macos-x64
             dist/checksums.txt

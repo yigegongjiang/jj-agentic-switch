@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO="yigegongjiang/jj-llm-switch"
-BIN="${HOME}/.local/bin/jjllmuse"
+BIN="${HOME}/.local/bin/jj-llm-switch"
 
 if [ "${1:-}" = "uninstall" ]; then
   rm -f "$BIN" && echo "removed: $BIN"
@@ -16,7 +16,7 @@ case "$(uname -m)" in
   *)      echo "unsupported arch: $(uname -m)" >&2; exit 1 ;;
 esac
 
-asset="jjllmuse-macos-${arch}"
+asset="jj-llm-switch-macos-${arch}"
 base="https://github.com/${REPO}/releases/latest/download"
 
 tmpdir="$(mktemp -d)"

@@ -11,6 +11,17 @@
 
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) + [SemVer](https://semver.org/).
 
+## [0.4.0] - 2026-07-21
+
+### Changed
+
+- CLI 命令重命名: `jjllmuse` → `jj-llm-switch` (与项目名一致); 二进制资产 / 安装路径同步更名.
+- 备份目录: `~/.config/jjllmuse` → `~/.config/jj-llm-switch`.
+
+### Removed
+
+- 旧命令 `jjllmuse` / 旧目录 `~/.config/jjllmuse` 不再兼容; 升级后如有旧备份需 `mv ~/.config/jjllmuse ~/.config/jj-llm-switch`, 旧 binary `rm ~/.local/bin/jjllmuse`.
+
 ## [0.3.0] - 2026-07-10
 
 ### Added

@@ -6,7 +6,7 @@
 - NEVER 写「开发」段 (VibeCoding 不向人类解释 dev 命令)
 ```
 
-# jjllmuse
+# jj-llm-switch
 
 本机 **Claude Code** 与 **Codex** CLI 多账号一键切换 (macOS arm64 / x64).
 
@@ -19,19 +19,19 @@ curl -fsSL https://raw.githubusercontent.com/yigegongjiang/jj-llm-switch/main/in
 ```
 
 ```sh
-jjllmuse                       # 当前账号 + 备份列表
-jjllmuse cc <email|prefix>     # 切 Claude Code 账号 (模糊匹配)
-jjllmuse cx <email|prefix>     # 切 Codex 账号
-jjllmuse cc backup             # 手动备份当前账号 (通常无需: 查看状态 / 切换时自动捕获)
-jjllmuse update                # 自更新到 GitHub Releases latest
-jjllmuse -h
+jj-llm-switch                       # 当前账号 + 备份列表
+jj-llm-switch cc <email|prefix>     # 切 Claude Code 账号 (模糊匹配)
+jj-llm-switch cx <email|prefix>     # 切 Codex 账号
+jj-llm-switch cc backup             # 手动备份当前账号 (通常无需: 查看状态 / 切换时自动捕获)
+jj-llm-switch update                # 自更新到 GitHub Releases latest
+jj-llm-switch -h
 ```
 
-> 备份: `~/.config/jjllmuse/{cc,cx}/auth-backup-<email>.json` (0600). 含 refresh token, NEVER 提交 git.
+> 备份: `~/.config/jj-llm-switch/{cc,cx}/auth-backup-<email>.json` (0600). 含 refresh token, NEVER 提交 git.
 
 ## 架构
 
-Bun + TypeScript 编译为 macOS arm64 + x64 单文件 binary. 凭据切换直接读写 macOS Keychain (`security`) + 备份至 `~/.config/jjllmuse`; cc 切换同步清 `~/.claude.json` 身份缓存. 查看状态 / 切换时自动捕获当前活跃账号入备份库 (token 未变则跳过, 首次收录时提示), 用户无需手动 `backup`. 安装 / 自更新按 arch 取对应 binary, 附 sha256 校验. 发布走 GitHub Actions tag push 自动编译上传 (见 [workflow.md](./workflow.md)).
+Bun + TypeScript 编译为 macOS arm64 + x64 单文件 binary. 凭据切换直接读写 macOS Keychain (`security`) + 备份至 `~/.config/jj-llm-switch`; cc 切换同步清 `~/.claude.json` 身份缓存. 查看状态 / 切换时自动捕获当前活跃账号入备份库 (token 未变则跳过, 首次收录时提示), 用户无需手动 `backup`. 安装 / 自更新按 arch 取对应 binary, 附 sha256 校验. 发布走 GitHub Actions tag push 自动编译上传 (见 [workflow.md](./workflow.md)).
 
 ## 项目结构
 

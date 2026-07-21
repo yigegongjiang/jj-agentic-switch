@@ -3,7 +3,7 @@ import { dirname, join } from "node:path";
 import pkg from "../package.json" with { type: "json" };
 
 export const VERSION = pkg.version;
-const HOME = join(process.env.HOME ?? "", ".config/jjllmuse");
+const HOME = join(process.env.HOME ?? "", ".config/jj-llm-switch");
 export const CC_DIR = join(HOME, "cc");
 export const CX_DIR = join(HOME, "cx");
 

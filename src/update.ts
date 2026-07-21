@@ -10,7 +10,7 @@ function assetName(): string {
   if (process.platform !== "darwin") fail(`unsupported OS: ${process.platform} (macOS only)`);
   const a = process.arch;
   if (a !== "arm64" && a !== "x64") fail(`unsupported arch: ${a}`);
-  return `jjllmuse-macos-${a}`;
+  return `jj-llm-switch-macos-${a}`;
 }
 
 const tty = process.stderr.isTTY && !process.env.NO_COLOR;
@@ -67,7 +67,7 @@ async function verifyChecksum(buf: Buffer, asset: string) {
 
 export async function update() {
   const dest = process.execPath;
-  if (!basename(dest).startsWith("jjllmuse")) fail(`not a jjllmuse binary: ${dest}`);
+  if (!basename(dest).startsWith("jj-llm-switch")) fail(`not a jj-llm-switch binary: ${dest}`);
   const asset = assetName();
   const buf = await download(`${BASE}/${asset}`);
   await verifyChecksum(buf, asset);
