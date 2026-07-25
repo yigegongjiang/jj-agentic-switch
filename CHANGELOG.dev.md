@@ -7,6 +7,13 @@
 
 # Changelog (developer, follow [CHANGELOG.md](./CHANGELOG.md))
 
+## [0.4.1] - 2026-07-25
+
+### Fixed
+
+- Claude Code 当前凭据无法识别邮箱时不再阻断切换; 先独立保全原凭据, 再切换目标账号.
+  - `ccCurrent` / `ccBackup` / `ccSwitch` 统一按凭据 SHA-256 指纹去重写 `auth-recovery-*.json` (0600); fake Keychain/profile 测试覆盖恢复、切换、权限、去重.
+
 ## [0.4.0] - 2026-07-21
 
 ### Changed

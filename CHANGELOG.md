@@ -11,6 +11,12 @@
 
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) + [SemVer](https://semver.org/).
 
+## [0.4.1] - 2026-07-25
+
+### Fixed
+
+- Claude Code 当前凭据无法识别邮箱时不再阻断切换; 先独立保全原凭据, 再切换目标账号.
+
 ## [0.4.0] - 2026-07-21
 
 ### Changed

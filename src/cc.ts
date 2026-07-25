@@ -1,4 +1,5 @@
 // Claude Code: macOS Keychain (service "Claude Code-credentials"), identity via /api/oauth/profile.
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { CC_DIR, cyan, gray, info, warn, fail, listEmails, resolveEmail, writeSecret, backupPath, readBackup } from "./shared.ts";
@@ -11,7 +12,7 @@ interface Profile { account?: { email?: string } }
 interface ClaudeAuthStatus { loggedIn?: boolean; email?: string }
 
 async function sh(cmd: string[], allowFail = false): Promise<{ stdout: string; code: number }> {
-  const p = Bun.spawn(cmd, { stdout: "pipe", stderr: "pipe" });
+  const p = Bun.spawn(cmd, { env: process.env, stdout: "pipe", stderr: "pipe" });
   const stdout = await new Response(p.stdout).text();
   const code = await p.exited;
   if (code !== 0 && !allowFail) fail(`${cmd[0]} failed: ${await new Response(p.stderr).text()}`);
@@ -98,6 +99,15 @@ function writeCcBackup(email: string, raw: string): boolean {
   return wasNew;
 }
 
+// Never discard a credential whose account cannot be identified. The content
+// fingerprint deduplicates repeat attempts while preserving every distinct blob.
+function preserveCcRecovery(raw: string): string {
+  const fingerprint = createHash("sha256").update(raw).digest("hex").slice(0, 16);
+  const path = join(CC_DIR, `auth-recovery-${fingerprint}.json`);
+  if (!existsSync(path)) writeSecret(path, raw);
+  return path;
+}
+
 // Silently capture the live account into the backup library. Backup already
 // holds the same accessToken → skip (no mtime churn). Otherwise write via the
 // merge-safe path; announce only genuinely new emails. Never throws.
@@ -166,6 +176,7 @@ export async function ccCurrent() {
     console.log(`cc  ${cyan(active.email ?? "?")}`);
     // Auto-capture the live account so users never have to run `backup` by hand.
     if (active.email) captureCc(active.email, active.raw);
+    else warn(`current cc account unidentified; preserved credential → ${preserveCcRecovery(active.raw)}`);
   } catch (e) {
     warn(`cc status unavailable: ${e instanceof Error ? e.message : String(e)}`);
   }
@@ -176,7 +187,10 @@ export async function ccBackup() {
   if (!raw) fail("no cc credential in Keychain");
   const a = parse(raw);
   const email = await identifyEmail(a);
-  if (!email) fail("could not resolve cc email (token expired or network down)");
+  if (!email) {
+    warn(`current cc account unidentified; preserved credential → ${preserveCcRecovery(raw)}`);
+    return;
+  }
   writeCcBackup(email, raw);
   info(`backed up cc → ${cyan(email)}`);
 }
@@ -203,9 +217,12 @@ export async function ccSwitch(query: string, rebackup = true) {
     if (rebackup) {
       let curEmail = cur.claudeAiOauth.refreshToken ? findEmailByRefresh(cur.claudeAiOauth.refreshToken, email) : null;
       if (!curEmail) curEmail = await identifyEmail(cur);
-      if (!curEmail) fail("cannot identify current cc account. Run: jj-llm-switch cc backup");
-      writeCcBackup(curEmail, currentRaw);
-      info(`re-backed up cc → ${cyan(curEmail)}`);
+      if (curEmail) {
+        writeCcBackup(curEmail, currentRaw);
+        info(`re-backed up cc → ${cyan(curEmail)}`);
+      } else {
+        warn(`current cc account unidentified; preserved credential → ${preserveCcRecovery(currentRaw)}`);
+      }
     }
   }
 

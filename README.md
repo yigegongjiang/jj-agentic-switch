@@ -27,7 +27,7 @@ jj-llm-switch update                # 自更新到 GitHub Releases latest
 jj-llm-switch -h
 ```
 
-> 备份: `~/.config/jj-llm-switch/{cc,cx}/auth-backup-<email>.json` (0600). 含 refresh token, NEVER 提交 git.
+> 备份: `~/.config/jj-llm-switch/{cc,cx}/auth-backup-<email>.json` (0600). 无法识别的 cc 当前凭据另存 `auth-recovery-<fingerprint>.json`. 含 refresh token, NEVER 提交 git.
 
 ## 架构
 
