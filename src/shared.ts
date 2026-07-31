@@ -3,9 +3,18 @@ import { dirname, join } from "node:path";
 import pkg from "../package.json" with { type: "json" };
 
 export const VERSION = pkg.version;
-const HOME = join(process.env.HOME ?? "", ".config/jj-llm-switch");
+const CONFIG_HOME = join(process.env.HOME ?? "", ".config");
+const HOME = join(CONFIG_HOME, "jj-agentic-switch");
 export const CC_DIR = join(HOME, "cc");
 export const CX_DIR = join(HOME, "cx");
+
+// One-time rename of the pre-0.5.0 store (project was `jj-llm-switch`). Backups
+// hold refresh tokens — silently ignoring them would force a re-login per account.
+// Same-parent rename → atomic; never overwrites an existing new-name store.
+const LEGACY_HOME = join(CONFIG_HOME, "jj-llm-switch");
+if (!existsSync(HOME) && existsSync(LEGACY_HOME)) {
+  try { renameSync(LEGACY_HOME, HOME); } catch { /* keep legacy store intact */ }
+}
 
 const tty = process.stdout.isTTY && !process.env.NO_COLOR;
 const c = (code: string, s: string) => (tty ? `\x1b[${code}m${s}\x1b[0m` : s);

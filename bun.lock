@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "jj-llm-switch",
+      "name": "jj-agentic-switch",
       "devDependencies": {
         "@types/bun": "latest",
         "typescript": "^5.6.0",

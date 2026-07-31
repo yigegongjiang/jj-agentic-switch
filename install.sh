@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="yigegongjiang/jj-llm-switch"
-BIN="${HOME}/.local/bin/jj-llm-switch"
+REPO="yigegongjiang/jj-agentic-switch"
+BIN="${HOME}/.local/bin/jj-agentic-switch"
 
 if [ "${1:-}" = "uninstall" ]; then
   rm -f "$BIN" && echo "removed: $BIN"
@@ -16,7 +16,7 @@ case "$(uname -m)" in
   *)      echo "unsupported arch: $(uname -m)" >&2; exit 1 ;;
 esac
 
-asset="jj-llm-switch-macos-${arch}"
+asset="jj-agentic-switch-macos-${arch}"
 base="https://github.com/${REPO}/releases/latest/download"
 
 tmpdir="$(mktemp -d)"

@@ -6,9 +6,9 @@ import { join } from "node:path";
 const originalHome = process.env.HOME;
 const originalPath = process.env.PATH;
 const originalFetch = globalThis.fetch;
-const home = mkdtempSync(join(tmpdir(), "jj-llm-switch-cc-"));
+const home = mkdtempSync(join(tmpdir(), "jj-agentic-switch-cc-"));
 const bin = join(home, "bin");
-const ccDir = join(home, ".config", "jj-llm-switch", "cc");
+const ccDir = join(home, ".config", "jj-agentic-switch", "cc");
 const keychain = join(home, "keychain.json");
 
 mkdirSync(bin);

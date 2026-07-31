@@ -11,6 +11,17 @@
 
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) + [SemVer](https://semver.org/).
 
+## [0.5.0] - 2026-07-31
+
+### Changed
+
+- 项目 / 命令 / 仓库更名: `jj-llm-switch` → `jj-agentic-switch`; 安装路径 `~/.local/bin/jj-agentic-switch`.
+- 备份目录 `~/.config/jj-llm-switch` → `~/.config/jj-agentic-switch`; 首次运行自动迁移旧目录, 无需手动搬.
+
+### Removed
+
+- 旧命令 `jj-llm-switch` 不再随发布更新; 用新安装命令装一次, 再 `rm ~/.local/bin/jj-llm-switch`.
+
 ## [0.4.1] - 2026-07-25
 
 ### Fixed
@@ -114,13 +125,13 @@
 - 切换前自动备份当前账号; 备份存 `~/.config/jjllmuse` (0600).
 - macOS arm64 单文件 binary, 一行 `curl` 安装.
 
-[0.2.0]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.2.0
-[0.1.9]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.9
-[0.1.8]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.8
-[0.1.7]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.7
-[0.1.6]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.6
-[0.1.5]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.5
-[0.1.4]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.4
-[0.1.3]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.3
-[0.1.2]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.2
-[0.1.1]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.1
+[0.2.0]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.2.0
+[0.1.9]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.9
+[0.1.8]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.8
+[0.1.7]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.7
+[0.1.6]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.6
+[0.1.5]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.5
+[0.1.4]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.4
+[0.1.3]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.3
+[0.1.2]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.2
+[0.1.1]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.1

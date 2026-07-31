@@ -7,6 +7,20 @@
 
 # Changelog (developer, follow [CHANGELOG.md](./CHANGELOG.md))
 
+## [0.5.0] - 2026-07-31
+
+### Changed
+
+- 项目 / 命令 / 仓库更名: `jj-llm-switch` → `jj-agentic-switch`; 安装路径 `~/.local/bin/jj-agentic-switch`.
+  - `package.json` `name`+`bin`; `install.sh` `REPO`/`BIN`/`asset`; `update.ts` `BASE`/`assetName()`/`basename` 前缀校验; `release.yml` 双 binary + `checksums.txt`; `cli.ts` HELP / unknown-cmd; `README.md`. `build.ts` 经 `pkg.name` 自动跟随. GitHub repo rename (旧 URL 由 GitHub 302 重定向), remote 保持 `p.github.com` SSH 别名.
+- 备份目录 `~/.config/jj-llm-switch` → `~/.config/jj-agentic-switch`; 首次运行自动迁移旧目录, 无需手动搬.
+  - `shared.ts` 模块加载时 `renameSync(LEGACY_HOME, HOME)` (同父目录 = 原子); 新目录已存在则跳过, 异常吞掉保留旧目录. `migrate.test.ts` 用 fake HOME + `cli.ts -v` 子进程覆盖迁移 / 不覆盖 / 空目录三态.
+
+### Removed
+
+- 旧命令 `jj-llm-switch` 不再随发布更新; 用新安装命令装一次, 再 `rm ~/.local/bin/jj-llm-switch`.
+  - 旧 binary 的 `update` 会拉到新 release 但 asset 名已变 → 404, 只能重装.
+
 ## [0.4.1] - 2026-07-25
 
 ### Fixed
@@ -130,13 +144,13 @@
   - cc 切换同时清 `~/.claude.json` 身份缓存.
 - macOS arm64 单文件 binary, 一行 `curl` 安装.
 
-[0.2.0]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.2.0
-[0.1.9]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.9
-[0.1.8]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.8
-[0.1.7]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.7
-[0.1.6]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.6
-[0.1.5]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.5
-[0.1.4]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.4
-[0.1.3]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.3
-[0.1.2]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.2
-[0.1.1]: https://github.com/yigegongjiang/jj-llm-switch/releases/tag/v0.1.1
+[0.2.0]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.2.0
+[0.1.9]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.9
+[0.1.8]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.8
+[0.1.7]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.7
+[0.1.6]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.6
+[0.1.5]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.5
+[0.1.4]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.4
+[0.1.3]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.3
+[0.1.2]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.2
+[0.1.1]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.1

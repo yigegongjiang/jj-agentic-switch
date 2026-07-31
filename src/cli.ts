@@ -4,15 +4,15 @@ import { ccCurrent, ccBackup, ccList, ccSwitch } from "./cc.ts";
 import { cxCurrent, cxBackup, cxList, cxSwitch } from "./cx.ts";
 import { update } from "./update.ts";
 
-const HELP = `jj-llm-switch v${VERSION} — Claude Code / Codex account switcher
+const HELP = `jj-agentic-switch v${VERSION} — Claude Code / Codex account switcher
 
 USAGE
-  jj-llm-switch                       status of both + backup lists
-  jj-llm-switch <cc|cx>               status + backups of one tool
-  jj-llm-switch <cc|cx> <email>       switch (fuzzy match on email)
-  jj-llm-switch <cc|cx> backup        manually back up current account (usually automatic)
-  jj-llm-switch update                self-update from latest GitHub release
-  jj-llm-switch -h | -v
+  jj-agentic-switch                       status of both + backup lists
+  jj-agentic-switch <cc|cx>               status + backups of one tool
+  jj-agentic-switch <cc|cx> <email>       switch (fuzzy match on email)
+  jj-agentic-switch <cc|cx> backup        manually back up current account (usually automatic)
+  jj-agentic-switch update                self-update from latest GitHub release
+  jj-agentic-switch -h | -v
 `;
 
 type Tool = "cc" | "cx";
@@ -42,5 +42,5 @@ if (!first) {
 } else if (first === "update") {
   await update();
 } else {
-  fail(`unknown command '${first}'. Run 'jj-llm-switch -h'`);
+  fail(`unknown command '${first}'. Run 'jj-agentic-switch -h'`);
 }
