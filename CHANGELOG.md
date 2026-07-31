@@ -1,15 +1,23 @@
 ```When Editing
-本文档作用: 面向使用者的发版记录; 只写用户感受得到的变化, MUST NOT 写技术细节 (→ CHANGELOG.dev.md)
+本文档作用: 唯一 changelog; 面向使用者的发版记录; 只写用户感受得到的变化, MUST NOT 写技术细节 (→ git commit message)
 遵循 AGENTS.md 文档编写规范
 - 写: 新功能 / 行为修复 / 体验 / 安全 / 命令迁移
 - MUST NOT 写: 文件路径 / 函数名 / 组件名 / 依赖包名 / 重构细节
 - 单条 ≤ 2 行, 单版本 ≤ 5 条; 段落: Added / Changed / Fixed / Removed / Security
 - 无用户可感知变化 → 占位: `跟随版本同步发布`
+- 每版本 MUST 在文末补 tag 链接
+- MUST NOT 新建 CHANGELOG.dev.md 或其他 changelog 文件
 ```
 
 # Changelog
 
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) + [SemVer](https://semver.org/).
+
+## [0.5.1] - 2026-07-31
+
+### Changed
+
+- 安装 / 卸载命令地址迁到 `scripts/install.sh`; 旧地址失效, 照 README 重新复制一行 curl 即可.
 
 ## [0.5.0] - 2026-07-31
 
@@ -125,6 +133,11 @@
 - 切换前自动备份当前账号; 备份存 `~/.config/jjllmuse` (0600).
 - macOS arm64 单文件 binary, 一行 `curl` 安装.
 
+[0.5.1]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.5.1
+[0.5.0]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.5.0
+[0.4.1]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.4.1
+[0.4.0]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.4.0
+[0.3.0]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.3.0
 [0.2.0]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.2.0
 [0.1.9]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.9
 [0.1.8]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.1.8

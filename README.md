@@ -14,8 +14,8 @@
 
 ```sh
 # 安装 / 卸载
-curl -fsSL https://raw.githubusercontent.com/yigegongjiang/jj-agentic-switch/main/install.sh | bash
-curl -fsSL https://raw.githubusercontent.com/yigegongjiang/jj-agentic-switch/main/install.sh | bash -s uninstall
+curl -fsSL https://raw.githubusercontent.com/yigegongjiang/jj-agentic-switch/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/yigegongjiang/jj-agentic-switch/main/scripts/install.sh | bash -s uninstall
 ```
 
 ```sh
@@ -42,4 +42,5 @@ src/cx.ts       # Codex 账号读写 / 切换 / 备份
 src/shared.ts   # Keychain / 文件 / 模糊匹配公共逻辑
 src/update.ts   # 自更新 (按 arch 拉 Releases binary, 进度条 + sha256 校验, 原子替换)
 build.ts        # 编译 macOS arm64 + x64 双 binary 到 dist/
+scripts/        # install.sh (装 Releases binary) + install-local.sh (本地编译安装)
 ```
