@@ -13,6 +13,12 @@
 
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) + [SemVer](https://semver.org/).
 
+## [0.5.2] - 2026-07-31
+
+### Added
+
+- 新增 `status` 子命令: 查看 cc + cx 当前账号 + 备份列表, 等同不带参数运行.
+
 ## [0.5.1] - 2026-07-31
 
 ### Changed

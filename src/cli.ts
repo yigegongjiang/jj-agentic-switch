@@ -8,6 +8,7 @@ const HELP = `jj-agentic-switch v${VERSION} — Claude Code / Codex account swit
 
 USAGE
   jj-agentic-switch                       status of both + backup lists
+  jj-agentic-switch status                same as no argument
   jj-agentic-switch <cc|cx>               status + backups of one tool
   jj-agentic-switch <cc|cx> <email>       switch (fuzzy match on email)
   jj-agentic-switch <cc|cx> backup        manually back up current account (usually automatic)
@@ -21,6 +22,12 @@ const backup  = { cc: ccBackup,  cx: cxBackup  };
 const list    = { cc: ccList,    cx: cxList    };
 const swit    = { cc: ccSwitch,  cx: cxSwitch  };
 
+async function statusAll() {
+  await ccCurrent(); cxCurrent();
+  console.log("\ncc backups:"); ccList();
+  console.log("\ncx backups:"); cxList();
+}
+
 async function run(tool: Tool, arg?: string) {
   if (!arg) { await current[tool](); console.log(); list[tool](); return; }
   if (arg === "backup") return backup[tool]();
@@ -29,10 +36,8 @@ async function run(tool: Tool, arg?: string) {
 
 const [first, second] = process.argv.slice(2);
 
-if (!first) {
-  await ccCurrent(); cxCurrent();
-  console.log("\ncc backups:"); ccList();
-  console.log("\ncx backups:"); cxList();
+if (!first || first === "status") {
+  await statusAll();
 } else if (first === "-h" || first === "--help") {
   console.log(HELP);
 } else if (first === "-v" || first === "--version") {

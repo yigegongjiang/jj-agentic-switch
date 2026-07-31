@@ -20,6 +20,7 @@ curl -fsSL https://raw.githubusercontent.com/yigegongjiang/jj-agentic-switch/mai
 
 ```sh
 jj-agentic-switch                       # 当前账号 + 备份列表
+jj-agentic-switch status                # 同上
 jj-agentic-switch cc <email|prefix>     # 切 Claude Code 账号 (模糊匹配)
 jj-agentic-switch cx <email|prefix>     # 切 Codex 账号
 jj-agentic-switch cc backup             # 手动备份当前账号 (通常无需: 查看状态 / 切换时自动捕获)
