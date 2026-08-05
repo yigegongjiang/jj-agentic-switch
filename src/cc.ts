@@ -210,13 +210,15 @@ export async function ccSwitch(query: string, rebackup = true) {
 
   const currentRaw = await readKeychain();
   if (currentRaw) {
-    const cur = parse(currentRaw);
-    if (cur.claudeAiOauth.refreshToken && cur.claudeAiOauth.refreshToken === target.claudeAiOauth.refreshToken) {
+    let cur: Partial<Auth> | null = null;
+    try { cur = JSON.parse(currentRaw) as Partial<Auth>; } catch {}
+    const currentOauth = cur?.claudeAiOauth;
+    if (currentOauth?.refreshToken && currentOauth.refreshToken === target.claudeAiOauth.refreshToken) {
       warn(`cc already on ${email}`); return;
     }
     if (rebackup) {
-      let curEmail = cur.claudeAiOauth.refreshToken ? findEmailByRefresh(cur.claudeAiOauth.refreshToken, email) : null;
-      if (!curEmail) curEmail = await identifyEmail(cur);
+      let curEmail = currentOauth?.refreshToken ? findEmailByRefresh(currentOauth.refreshToken, email) : null;
+      if (!curEmail && currentOauth?.accessToken) curEmail = await identifyEmail(cur as Auth);
       if (curEmail) {
         writeCcBackup(curEmail, currentRaw);
         info(`re-backed up cc → ${cyan(curEmail)}`);

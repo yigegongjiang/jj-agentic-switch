@@ -42,6 +42,7 @@ chmodSync(join(bin, "security"), 0o700);
 chmodSync(join(bin, "claude"), 0o700);
 
 const current = JSON.stringify({ claudeAiOauth: { accessToken: "current-access", refreshToken: "current-refresh" } });
+const expired = JSON.stringify({ claudeAiOauth: { accessToken: "", refreshToken: "" } });
 const yang = JSON.stringify({ claudeAiOauth: { accessToken: "yang-access", refreshToken: "yang-refresh" } });
 const chen = JSON.stringify({ claudeAiOauth: { accessToken: "chen-access", refreshToken: "chen-refresh" } });
 
@@ -60,7 +61,7 @@ afterAll(() => {
   rmSync(home, { recursive: true, force: true });
 });
 
-test("preserves an unidentified current credential before switching", async () => {
+test("preserves unidentified and tokenless current credentials before switching", async () => {
   await ccBackup();
   expect(readFileSync(keychain, "utf8")).toBe(current);
   expect(readFileSync(join(ccDir, "auth-backup-fan.yang@example.com.json"), "utf8")).toBe(yang);
@@ -74,4 +75,11 @@ test("preserves an unidentified current credential before switching", async () =
   expect(readFileSync(keychain, "utf8")).toBe(yang);
   recoveries = readdirSync(ccDir).filter(name => name.startsWith("auth-recovery-"));
   expect(recoveries).toHaveLength(1);
+
+  writeFileSync(keychain, expired);
+  await ccSwitch("chen");
+  expect(readFileSync(keychain, "utf8")).toBe(chen);
+  recoveries = readdirSync(ccDir).filter(name => name.startsWith("auth-recovery-"));
+  expect(recoveries).toHaveLength(2);
+  expect(recoveries.some(name => readFileSync(join(ccDir, name), "utf8") === expired)).toBe(true);
 });

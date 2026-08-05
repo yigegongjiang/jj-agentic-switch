@@ -13,6 +13,12 @@
 
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) + [SemVer](https://semver.org/).
 
+## [0.5.3] - 2026-08-05
+
+### Fixed
+
+- 当前 Claude Code 凭据已过期或清空时, 仍可切换到有效备份账号.
+
 ## [0.5.2] - 2026-07-31
 
 ### Added
@@ -139,6 +145,8 @@
 - 切换前自动备份当前账号; 备份存 `~/.config/jjllmuse` (0600).
 - macOS arm64 单文件 binary, 一行 `curl` 安装.
 
+[0.5.3]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.5.3
+[0.5.2]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.5.2
 [0.5.1]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.5.1
 [0.5.0]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.5.0
 [0.4.1]: https://github.com/yigegongjiang/jj-agentic-switch/releases/tag/v0.4.1
